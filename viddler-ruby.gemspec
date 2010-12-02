@@ -1,9 +1,9 @@
 # -*- encoding: utf-8 -*-
-require File.expand_path("../lib/viddler-ruby/version", __FILE__)
+require File.expand_path("../lib/viddler/version", __FILE__)
 
 Gem::Specification.new do |s|
   s.name        = "viddler-ruby"
-  s.version     = Viddler::Ruby::VERSION
+  s.version     = Viddler::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = []
   s.email       = []
