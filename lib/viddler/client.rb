@@ -2,7 +2,7 @@ module Viddler
   # Base class for accessing the Viddler API.
   #
   # For more information about the Viddler API, check out the documentation:
-  # http://api.viddler.com/api/v2/
+  # http://developers.viddler.com/documentation/api-v2/
   #
   # Examples
   # 
