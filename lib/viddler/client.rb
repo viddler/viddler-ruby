@@ -18,6 +18,24 @@ module Viddler
     
     attr_accessor :api_key
     
+    # Sets the API key and sessionid if needed for the given arguments
+    # 
+    # api_key  - The String API Key from Viddler
+    # username - The String Viddler username. Only needed for an
+    #            unauthenticated call. (optional)
+    # password - The String Viddler password. Only needed for an
+    #            unauthenticated call. (optional)
+    #
+    # Examples
+    #
+    #  # Initialize a client with just an API key
+    #  viddler = Viddler::Client.new 'your api key'
+    #  
+    #  # Create an authenticated client. Every call made with this will use your
+    #  # session
+    #  viddler = Viddler::Client.new 'your api key', 'your username', 'your password'
+    #
+    # Returns an instance of Viddler::Client
     def initialize(api_key, username=nil, password=nil)
       self.api_key = api_key
     end
