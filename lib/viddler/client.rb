@@ -77,6 +77,8 @@ module Viddler
       arguments[:api_key]   = api_key
       arguments[:sessionid] = sessionid if authenticated?
       JSON.parse RestClient.get(DEFAULT_ENDPOINT + method + '.json', :params => arguments)
+    rescue RestClient::ExceptionWithResponse => e
+      raise_api_exception e
     end
     
     # Public: Make a POST call to the Viddler API.
@@ -95,6 +97,8 @@ module Viddler
       arguments[:api_key]   = api_key
       arguments[:sessionid] = sessionid if authenticated?
       JSON.parse RestClient.post(DEFAULT_ENDPOINT + method + '.json', :params => arguments)
+    rescue RestClient::ExceptionWithResponse => e
+      raise_api_exception e
     end
     
     # Public: Upload a video to the Viddler API.
@@ -130,6 +134,16 @@ module Viddler
       ordered_arguments[:file]      = file
       
       JSON.parse RestClient.post(endpoint, ordered_arguments)
+    rescue RestClient::ExceptionWithResponse => e
+      raise_api_exception e
+    end
+    
+    private
+    
+    def raise_api_exception(exception)
+      resp = JSON.parse(exception.response) 
+      
+      raise Viddler::ApiException.new(resp['error']['code'], resp['error']['description'], resp['error']['details']) if resp['error']
     end
   end
 end

@@ -67,7 +67,11 @@ describe Viddler::Client, "#get" do
     @client.get('viddler.api.getInfo')
   end
   
-  it "raises ApiException if an error occurs"
+  it "raises ApiException if an error occurs" do
+    error = RestClient::ExceptionWithResponse.new '{"error":{"code":"9","description":"session invalid","details":"details"}}'
+    RestClient.stub!(:get).and_raise(error)
+    lambda {@client.get('viddler.api.getInfo')}.should raise_error(Viddler::ApiException, "#9: session invalid (details)")
+  end
   
   context "with authenticated client" do
     before(:each) do
@@ -102,7 +106,11 @@ describe Viddler::Client, "#post" do
     @client.post('viddler.api.getInfo')
   end
   
-  it "raises ApiException if an error occurs"
+  it "raises ApiException if an error occurs" do
+    error = RestClient::ExceptionWithResponse.new '{"error":{"code":"9","description":"session invalid","details":"details"}}'
+    RestClient.stub!(:post).and_raise(error)
+    lambda {@client.post('viddler.api.getInfo')}.should raise_error(Viddler::ApiException, "#9: session invalid (details)")
+  end
   
   context "with authenticated client" do
     before(:each) do
@@ -151,5 +159,9 @@ describe Viddler::Client, "#upload" do
     @client.upload(@file, :param1 => 'asdf').should == 'asdfasdf'
   end
   
-  it "raises an ApiException on API error"
+  it "raises an ApiException on API error" do
+    error = RestClient::ExceptionWithResponse.new '{"error":{"code":"9","description":"session invalid","details":"details"}}'
+    RestClient.stub!(:post).and_raise(error)
+    lambda {@client.upload(@file, :param1 => 'asdf')}.should raise_error(Viddler::ApiException, "#9: session invalid (details)")
+  end
 end
