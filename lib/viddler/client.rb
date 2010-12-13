@@ -92,8 +92,9 @@ module Viddler
     # Returns a Hash containing the API response.
     # Raises ApiException if an error is returned from the API.
     def post(method, arguments={})
+      arguments[:api_key]   = api_key
       arguments[:sessionid] = sessionid if authenticated?
-      JSON.parse RestClient.post(DEFAULT_ENDPOINT + method + '.json', arguments)
+      JSON.parse RestClient.post(DEFAULT_ENDPOINT + method + '.json', :params => arguments)
     end
     
     # Public: Upload a video to the Viddler API.
@@ -116,7 +117,16 @@ module Viddler
     # Returns a Hash containing the API response.
     # Raises ApiException if an error is returned from the API
     def upload(file, arguments)
+      # Need to use OrderedHash, because the API needs the file argument last
+      ordered_arguments = ActiveSupport::OrderedHash.new
       
+      arguments.each {|k,v| ordered_arguments[k] = v}
+      
+      ordered_arguments[:api_key]   = api_key
+      ordered_arguments[:sessionid] = sessionid
+      ordered_arguments[:file]      = file
+      
+      JSON.parse RestClient.post(DEFAULT_ENDPOINT + 'viddler.videos.upload.json', ordered_arguments)
     end
   end
 end

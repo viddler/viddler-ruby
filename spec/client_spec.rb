@@ -88,13 +88,18 @@ describe Viddler::Client, "#post" do
   end
   
   it "calls RestClient.post with proper params" do
-    RestClient.should_receive(:post).with('http://api.viddler.com/api/v2/viddler.api.getInfo.json', :param1 => 'asdf', :param2 => true)
+    RestClient.should_receive(:post).with('http://api.viddler.com/api/v2/viddler.api.getInfo.json', :params => hash_including(:param1 => 'asdf', :param2 => true))
     @client.post('viddler.api.getInfo', :param1 => 'asdf', :param2 => true)
   end
   
   it "returns result of JSON.parse(response)" do
     JSON.stub!(:parse).and_return('abc')
     @client.post('method').should == 'abc'
+  end
+  
+  it "includes API key" do
+    RestClient.should_receive(:post).with(anything, :params => hash_including(:api_key => 'abc123'))
+    @client.post('viddler.api.getInfo')
   end
   
   it "raises ApiException if an error occurs"
@@ -105,8 +110,38 @@ describe Viddler::Client, "#post" do
     end
     
     it "calls RestClient.post with sessionid" do
-      RestClient.should_receive('post').with(anything, hash_including(:sessionid => 'mysess'))
+      RestClient.should_receive('post').with(anything, :params => hash_including(:sessionid => 'mysess'))
       @client.post('viddler.api.getInfo', :something => 'yes')
     end
+  end
+end
+
+describe Viddler::Client, "#upload" do
+  before(:each) do
+    @client = Viddler::Client.new('abc123')
+    @file   = mock(File)
+    
+    @client.sessionid = 'mysess'
+    RestClient.stub!(:post).and_return('{"response":["hello","howdy"]}')
+  end
+  
+  it "calls RestClient.post with params and file" do
+    RestClient.should_receive(:post).with('http://api.viddler.com/api/v2/viddler.videos.upload.json', hash_including(:param1 => 'asdf', :param2 => true, :file => @file))
+    @client.upload @file, :param1 => 'asdf', :param2 => true
+  end
+  
+  it "includes sessionid" do
+    RestClient.should_receive(:post).with(anything, hash_including(:sessionid => 'mysess'))
+    @client.upload @file, :param1 => 'asdf', :param2 => true
+  end
+  
+  it "includes API key" do
+    RestClient.should_receive(:post).with(anything, hash_including(:api_key => 'abc123'))
+    @client.upload @file, :param1 => 'asdf', :param2 => true
+  end
+  
+  it "returns result of JSON.parse" do
+    JSON.stub!(:parse).and_return('asdfasdf')
+    @client.upload(@file, :param1 => 'asdf').should == 'asdfasdf'
   end
 end
