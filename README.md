@@ -8,7 +8,25 @@ Installation
 
     $ gem install viddler-ruby
     
-To use in a Ruby project:
+### Rails 2
+
+Add the following to your `config/environment.rb`:
+
+    config.gem 'viddler-ruby'
+    
+Make sure to run `rake gems:install` afterwards.
+
+### Rails 3 and Bundler
+
+Add the following to your Gemfile:
+
+    gem 'viddler-ruby'
+    
+Make sure to run `bundle install` afterwards
+
+### Other
+
+To use in a regular Ruby project:
 
     require 'rubygems'
     require 'viddler-ruby'
