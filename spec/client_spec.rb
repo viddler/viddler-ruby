@@ -120,13 +120,19 @@ describe Viddler::Client, "#upload" do
   before(:each) do
     @client = Viddler::Client.new('abc123')
     @file   = mock(File)
-    
     @client.sessionid = 'mysess'
+    
     RestClient.stub!(:post).and_return('{"response":["hello","howdy"]}')
+    @client.stub!(:get).and_return({"upload" => {"endpoint" => "http://upload.viddler.com/upload.json"}})
   end
   
-  it "calls RestClient.post with params and file" do
-    RestClient.should_receive(:post).with('http://api.viddler.com/api/v2/viddler.videos.upload.json', hash_including(:param1 => 'asdf', :param2 => true, :file => @file))
+  it "calls get with viddler.videos.prepareUpload" do
+    @client.should_receive(:get).with('viddler.videos.prepareUpload')
+    @client.upload @file, :param1 => 'asdf', :param2 => true
+  end
+  
+  it "calls RestClient.post with endpoint, params, and file" do
+    RestClient.should_receive(:post).with('http://upload.viddler.com/upload.json', hash_including(:param1 => 'asdf', :param2 => true, :file => @file))
     @client.upload @file, :param1 => 'asdf', :param2 => true
   end
   

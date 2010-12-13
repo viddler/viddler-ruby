@@ -117,6 +117,9 @@ module Viddler
     # Returns a Hash containing the API response.
     # Raises ApiException if an error is returned from the API
     def upload(file, arguments)
+      # Call prepareUpload first, to get upload endpoint
+      endpoint = get('viddler.videos.prepareUpload')["upload"]["endpoint"]
+      
       # Need to use OrderedHash, because the API needs the file argument last
       ordered_arguments = ActiveSupport::OrderedHash.new
       
@@ -126,7 +129,7 @@ module Viddler
       ordered_arguments[:sessionid] = sessionid
       ordered_arguments[:file]      = file
       
-      JSON.parse RestClient.post(DEFAULT_ENDPOINT + 'viddler.videos.upload.json', ordered_arguments)
+      JSON.parse RestClient.post(endpoint, ordered_arguments)
     end
   end
 end
