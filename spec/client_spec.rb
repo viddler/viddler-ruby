@@ -10,8 +10,8 @@ describe Viddler::Client, "#authenticate!" do
   before(:each) do
     @client = Viddler::Client.new('abc123')
     @client.stub!(:get).and_return({
-      :auth => {
-        :sessionid => 'mysess'
+      'auth' => {
+        'sessionid' => 'mysess'
       }
     })
   end

@@ -59,7 +59,7 @@ module Viddler
     # Returns a String sessionid
     def authenticate!(username, password)
       auth = get 'viddler.users.auth', :user => username, :password => password
-      self.sessionid = auth[:auth][:sessionid]
+      self.sessionid = auth['auth']['sessionid']
     end
 
     # Public: Make a GET call to the Viddler API.
