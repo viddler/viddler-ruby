@@ -30,3 +30,49 @@ describe Viddler::Client, "#authenticate!" do
     @client.authenticate!('user', 'pass').should == 'mysess'
   end
 end
+
+describe Viddler::Client, "#authenticated?" do
+  before(:each) do
+    @client = Viddler::Client.new('abc123')
+  end
+  
+  it "returns true if a sessionid is set" do
+    @client.sessionid = 'mysess'
+    @client.should be_authenticated
+  end
+  
+  it "returns false if a sessionid is not set" do
+    @client.should_not be_authenticated
+  end
+end
+
+describe Viddler::Client, "#get" do
+  before(:each) do
+    @client = Viddler::Client.new('abc123')
+    RestClient.stub!(:get).and_return('{"response":["hello", "howdy"]}')
+  end
+  
+  it "calls RestClient.get with proper params" do
+    RestClient.should_receive(:get).with(Viddler::Client::DEFAULT_ENDPOINT + 'viddler.api.getInfo.json', :param1 => 'asdf', :param2 => true)
+    @client.get('viddler.api.getInfo', :param1 => 'asdf', :param2 => true)
+  end
+  
+  it "returns result of JSON.parse(response)" do
+    JSON.stub!(:parse).and_return('abc')
+    
+    @client.get('method').should == 'abc'
+  end
+  
+  it "raises ApiException if an error occurs"
+  
+  context "with authenticated client" do
+    before(:each) do
+      @client.sessionid = "mysess"
+    end
+    
+    it "calls RestClient.get with sessionid" do
+      RestClient.should_receive('get').with(anything, hash_including(:sessionid => 'mysess'))
+      @client.get('viddler.api.getInfo', :something => 'yes')
+    end
+  end
+end

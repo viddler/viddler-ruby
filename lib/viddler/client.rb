@@ -10,7 +10,7 @@ module Viddler
   #  viddler = Viddler::Client.new 'your api key'
   #  
   class Client
-    DEFAULT_ENDPOINT = 'http://api.viddler.com/api/v2'
+    DEFAULT_ENDPOINT = 'http://api.viddler.com/api/v2/'
     
     attr_accessor :api_key, :sessionid
     
@@ -26,6 +26,24 @@ module Viddler
     # Returns an instance of Viddler::Client
     def initialize(api_key)
       self.api_key = api_key
+    end
+    
+    # Public: Simple method to determine if this is an authenticated client
+    #
+    # Examples
+    #
+    #   viddler = Viddler::Client.new 'abc123'
+    #   viddler.authenticated?
+    #   # => false
+    #
+    #   viddler = Viddler::Client.new 'abc123'
+    #   viddler.authenticate! 'user', 'pass'
+    #   viddler.authenticated?
+    #   # => true
+    #
+    # Returns Boolean
+    def authenticated?
+      !sessionid.nil?
     end
     
     # Public: Authenticate the client using a username and password. Any
@@ -56,7 +74,8 @@ module Viddler
     # Returns a Hash containing the API response.
     # Raises ApiException if an error is returned from the API.
     def get(method, arguments={})
-      
+      arguments[:sessionid] = sessionid if authenticated?
+      JSON.parse RestClient.get(DEFAULT_ENDPOINT + method + '.json', arguments)
     end
     
     # Public: Make a POST call to the Viddler API.
