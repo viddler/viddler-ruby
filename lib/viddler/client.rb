@@ -74,8 +74,9 @@ module Viddler
     # Returns a Hash containing the API response.
     # Raises ApiException if an error is returned from the API.
     def get(method, arguments={})
+      arguments[:api_key]   = api_key
       arguments[:sessionid] = sessionid if authenticated?
-      JSON.parse RestClient.get(DEFAULT_ENDPOINT + method + '.json', arguments)
+      JSON.parse RestClient.get(DEFAULT_ENDPOINT + method + '.json', :params => arguments)
     end
     
     # Public: Make a POST call to the Viddler API.
