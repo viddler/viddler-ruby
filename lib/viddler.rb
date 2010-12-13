@@ -1,2 +1,1 @@
-module Viddler
-end
+require 'viddler/client'
