@@ -31,9 +31,48 @@ module Viddler
     #
     #   viddler.get 'viddler.videos.getDetails', :video_id => 'abc123'
     #
-    # Returns a Hash containing the API response
-    # Raises ApiException if an error is returned from the API
+    # Returns a Hash containing the API response.
+    # Raises ApiException if an error is returned from the API.
     def get(method, arguments={})
+      
+    end
+    
+    # Public: Make a POST call to the Viddler API.
+    #
+    # method    - The String API method you'd like to call.
+    # arguments - The Hash of arguments to the API method (default: {}).
+    #
+    # Examples
+    #
+    #   viddler.post 'viddler.videos.setDetails', :video_id => 'abc123',
+    #                                             :title    => 'new title'
+    #
+    # Returns a Hash containing the API response.
+    # Raises ApiException if an error is returned from the API.
+    def post(method, arguments={})
+      
+    end
+    
+    # Public: Upload a video to the Viddler API.
+    #
+    # file      - The File you are uploading
+    # arguments - The Hash of arguments for the video
+    #             :title       - The String title of the video
+    #             :tags        - The String of tags for the video
+    #             :description - The String description of the video
+    #             :make_public - The Boolean to make the video public on
+    #                            upload. Please note that if set to false, it
+    #                            will not make your video private.
+    #
+    # Examples
+    # 
+    #   viddler.upload File.open('myvideo.avi'), :title       => "My Video",
+    #                                            :tags        => "viddler, ruby",
+    #                                            :description => "This is cool"
+    #
+    # Returns a Hash containing the API response.
+    # Raises ApiException if an error is returned from the API
+    def upload(file, arguments)
       
     end
   end
