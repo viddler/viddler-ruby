@@ -53,13 +53,12 @@ describe Viddler::Client, "#get" do
   end
   
   it "calls RestClient.get with proper params" do
-    RestClient.should_receive(:get).with(Viddler::Client::DEFAULT_ENDPOINT + 'viddler.api.getInfo.json', :param1 => 'asdf', :param2 => true)
+    RestClient.should_receive(:get).with('http://api.viddler.com/api/v2/viddler.api.getInfo.json', :param1 => 'asdf', :param2 => true)
     @client.get('viddler.api.getInfo', :param1 => 'asdf', :param2 => true)
   end
   
   it "returns result of JSON.parse(response)" do
     JSON.stub!(:parse).and_return('abc')
-    
     @client.get('method').should == 'abc'
   end
   
@@ -73,6 +72,36 @@ describe Viddler::Client, "#get" do
     it "calls RestClient.get with sessionid" do
       RestClient.should_receive('get').with(anything, hash_including(:sessionid => 'mysess'))
       @client.get('viddler.api.getInfo', :something => 'yes')
+    end
+  end
+end
+
+describe Viddler::Client, "#post" do
+  before(:each) do
+    @client = Viddler::Client.new('abc123')
+    RestClient.stub!(:post).and_return('{"response":["hello","howdy"]}')
+  end
+  
+  it "calls RestClient.post with proper params" do
+    RestClient.should_receive(:post).with('http://api.viddler.com/api/v2/viddler.api.getInfo.json', :param1 => 'asdf', :param2 => true)
+    @client.post('viddler.api.getInfo', :param1 => 'asdf', :param2 => true)
+  end
+  
+  it "returns result of JSON.parse(response)" do
+    JSON.stub!(:parse).and_return('abc')
+    @client.post('method').should == 'abc'
+  end
+  
+  it "raises ApiException if an error occurs"
+  
+  context "with authenticated client" do
+    before(:each) do
+      @client.sessionid = "mysess"
+    end
+    
+    it "calls RestClient.post with sessionid" do
+      RestClient.should_receive('post').with(anything, hash_including(:sessionid => 'mysess'))
+      @client.post('viddler.api.getInfo', :something => 'yes')
     end
   end
 end

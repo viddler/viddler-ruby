@@ -91,7 +91,8 @@ module Viddler
     # Returns a Hash containing the API response.
     # Raises ApiException if an error is returned from the API.
     def post(method, arguments={})
-      
+      arguments[:sessionid] = sessionid if authenticated?
+      JSON.parse RestClient.post(DEFAULT_ENDPOINT + method + '.json', arguments)
     end
     
     # Public: Upload a video to the Viddler API.
