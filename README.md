@@ -42,9 +42,10 @@ viddler-ruby provides a simple interface to [Viddler](http://viddler.com)'s API.
     puts video['title'] # => "My video"
     puts video['id']    # => "abc123"
     
-For an authenticated client, just pass a username and password:
+For an authenticated client, just call `authenticate!` on the client:
 
-    viddler = Viddler::Client.new('your api key', 'username', 'password')
+    viddler = Viddler::Client.new('your api key')
+    viddler.authenticate! 'username', 'password'
     
 Then, any calls made on `viddler` will be done using the correct session id.
 
