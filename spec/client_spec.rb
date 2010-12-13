@@ -144,4 +144,6 @@ describe Viddler::Client, "#upload" do
     JSON.stub!(:parse).and_return('asdfasdf')
     @client.upload(@file, :param1 => 'asdf').should == 'asdfasdf'
   end
+  
+  it "raises an ApiException on API error"
 end
