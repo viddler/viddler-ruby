@@ -5,11 +5,11 @@ Gem::Specification.new do |s|
   s.name        = "viddler-ruby"
   s.version     = Viddler::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = []
-  s.email       = []
-  s.homepage    = "http://rubygems.org/gems/viddler-ruby"
-  s.summary     = "TODO: Write a gem summary"
-  s.description = "TODO: Write a gem description"
+  s.authors     = ["Kyle Slattery"]
+  s.email       = ["kyle@viddler.com"]
+  s.homepage    = "http://github.com/viddler/viddler-ruby"
+  s.summary     = "An API wrapper for Viddler's v2 API"
+  s.description = "An API wrapper for Viddler's v2 API"
 
   s.required_rubygems_version = ">= 1.3.6"
   s.rubyforge_project         = "viddler-ruby"
