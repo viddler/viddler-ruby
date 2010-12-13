@@ -1,6 +1,21 @@
 viddler-ruby
 ============
 
+viddler-ruby is the officially supported gem for [Viddler's V2 API](http://developers.viddler.com/documentation/api-v2/).
+
+Installation
+------------
+
+    $ gem install viddler-ruby
+    
+To use in a Ruby project:
+
+    require 'rubygems'
+    require 'viddler-ruby'
+
+Usage
+-----
+
 viddler-ruby provides a simple interface to [Viddler](http://viddler.com)'s API.  To use, just instantiate an instance of Viddler::Client and call the `#get` and `#post` methods. For example, to get the details of a video:
 
     viddler = Viddler::Client.new('your api key')
