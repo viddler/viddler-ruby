@@ -92,7 +92,7 @@ describe Viddler::Client, "#post" do
   end
   
   it "calls RestClient.post with proper params" do
-    RestClient.should_receive(:post).with('http://api.viddler.com/api/v2/viddler.api.getInfo.json', :params => hash_including(:param1 => 'asdf', :param2 => true))
+    RestClient.should_receive(:post).with('http://api.viddler.com/api/v2/viddler.api.getInfo.json', hash_including(:param1 => 'asdf', :param2 => true))
     @client.post('viddler.api.getInfo', :param1 => 'asdf', :param2 => true)
   end
   
@@ -102,7 +102,7 @@ describe Viddler::Client, "#post" do
   end
   
   it "includes API key" do
-    RestClient.should_receive(:post).with(anything, :params => hash_including(:api_key => 'abc123'))
+    RestClient.should_receive(:post).with(anything, hash_including(:api_key => 'abc123'))
     @client.post('viddler.api.getInfo')
   end
   
@@ -118,7 +118,7 @@ describe Viddler::Client, "#post" do
     end
     
     it "calls RestClient.post with sessionid" do
-      RestClient.should_receive('post').with(anything, :params => hash_including(:sessionid => 'mysess'))
+      RestClient.should_receive('post').with(anything, hash_including(:sessionid => 'mysess'))
       @client.post('viddler.api.getInfo', :something => 'yes')
     end
   end

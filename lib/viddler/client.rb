@@ -96,7 +96,7 @@ module Viddler
     def post(method, arguments={})
       arguments[:api_key]   = api_key
       arguments[:sessionid] = sessionid if authenticated?
-      JSON.parse RestClient.post(DEFAULT_ENDPOINT + method + '.json', :params => arguments)
+      JSON.parse RestClient.post(DEFAULT_ENDPOINT + method + '.json', arguments)
     rescue RestClient::ExceptionWithResponse => e
       raise_api_exception e
     end
