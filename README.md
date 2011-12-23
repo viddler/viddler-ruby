@@ -49,6 +49,14 @@ For an authenticated client, just call `authenticate!` on the client:
     
 Then, any calls made on `viddler` will be done using the correct session id.
 
+If you want to record a video, you can request a record token during authentication:
+
+    viddler = Viddler::Client.new('your api key')
+    viddler.authenticate! 'username', 'password', true
+    puts viddler.record_token   # => the record token from API
+    
+The API returns a record token that's available for you.
+
 Uploading
 ---------
 
