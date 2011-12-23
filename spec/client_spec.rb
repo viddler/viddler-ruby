@@ -17,13 +17,26 @@ describe Viddler::Client, "#authenticate!" do
   end
   
   it "calls GET viddler.users.auth with username and password" do
-    @client.should_receive(:get).with('viddler.users.auth', :password => 'pass', :user => 'user')
+    @client.should_receive(:get).with('viddler.users.auth', :password => 'pass', :user => 'user', :get_record_token => 0)
     @client.authenticate! 'user', 'pass'
   end
   
   it "sets sessionid" do
     @client.authenticate! 'user', 'pass'
     @client.sessionid.should == 'mysess'
+  end
+  
+  it "gets record token when requested" do
+    @client.stub!(:get).and_return({
+      'auth' => {
+        'sessionid' => 'mysess',
+        'record_token' => 'token'
+      }
+    })
+    
+    @client.authenticate!('user', 'pass', true)
+    @client.sessionid.should == 'mysess'
+    @client.record_token.should == 'token'
   end
   
   it "returns sessionid" do
