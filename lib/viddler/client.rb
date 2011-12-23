@@ -12,7 +12,7 @@ module Viddler
   class Client
     DEFAULT_ENDPOINT = 'http://api.viddler.com/api/v2/'
     
-    attr_accessor :api_key, :sessionid
+    attr_accessor :api_key, :sessionid, :record_token
     
     # Sets the API key and sessionid if needed for the given arguments
     # 
@@ -57,8 +57,9 @@ module Viddler
     #   viddler.authenticate! 'username', 'password'
     #
     # Returns a String sessionid
-    def authenticate!(username, password)
-      auth = get 'viddler.users.auth', :user => username, :password => password
+    def authenticate!(username, password, get_record_token=false)
+      auth = get 'viddler.users.auth', :user => username, :password => password, :get_record_token => (get_record_token ? 1 : 0)
+      self.record_token = auth['auth']['record_token'] if get_record_token
       self.sessionid = auth['auth']['sessionid']
     end
 
